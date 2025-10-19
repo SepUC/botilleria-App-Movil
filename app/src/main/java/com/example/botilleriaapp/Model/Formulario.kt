@@ -36,7 +36,7 @@ fun Formulario() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
-            painter= painterResource(id = R.drawable.gragas2),
+            painter= painterResource(id = R.drawable.gragas),
             contentDescription="Logo de la app",
             modifier=Modifier
                 .fillMaxWidth()
