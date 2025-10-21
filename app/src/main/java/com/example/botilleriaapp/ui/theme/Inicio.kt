@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Button
+import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -31,13 +32,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.botilleriaapp.R
 
-// <--- 1. SE CREA UNA CLASE PARA GUARDAR EL NOMBRE Y LA IMAGEN
 data class Product(val name: String, val imageId: Int)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NavegacionScreen() {
-    // <--- LISTA ORIGINAL DE PRODUCTOS
     val products = listOf(
         Product("Cerveza Cristal", R.drawable.cristal),
         Product("Cerveza Escudo", R.drawable.escudo),
@@ -49,10 +48,8 @@ fun NavegacionScreen() {
         Product("Whisky Blue Label", R.drawable.bluelabel)
     )
 
-    // <--- ESTADO PARA GUARDAR EL TEXTO DE BÚSQUEDA
     var searchQuery by remember { mutableStateOf("") }
 
-    // <--- SE FILTRA LA LISTA BASÁNDOSE EN LA BÚSQUEDA
     val filteredProducts = remember(searchQuery, products) {
         if (searchQuery.isBlank()) {
             products
@@ -72,11 +69,24 @@ fun NavegacionScreen() {
                     titleContentColor = Color.Black
                 )
             )
+        },
+        // <--- 1. SE AÑADE LA BARRA INFERIOR
+        bottomBar = {
+            BottomAppBar(
+                containerColor = Color.LightGray
+            ) {
+                Button(
+                    onClick = { /* Lógica para ir al carrito */ },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                ) {
+                    Text("Ir al Carrito")
+                }
+            }
         }
     ) { innerPadding ->
-        // Se usa una Column para poner la barra de búsqueda sobre la grilla
         Column(modifier = Modifier.padding(innerPadding)) {
-            // <--- BARRA DE BÚSQUEDA
             OutlinedTextField(
                 value = searchQuery,
                 onValueChange = { searchQuery = it },
@@ -87,7 +97,6 @@ fun NavegacionScreen() {
                 singleLine = true
             )
 
-            // <--- LA GRILLA AHORA MUESTRA LOS PRODUCTOS FILTRADOS
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
                 modifier = Modifier.fillMaxSize(),
@@ -123,5 +132,6 @@ fun ProductItem(product: Product) {
         ) {
             Text("Comprar")
         }
+        // <--- 2. SE ELIMINÓ EL BOTÓN DE "AGREGAR AL CARRITO" DE AQUÍ
     }
 }
