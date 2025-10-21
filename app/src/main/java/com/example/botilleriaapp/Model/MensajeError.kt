@@ -5,5 +5,6 @@ class MensajeError {
     var password:String=""
     var correo:String=""
     var edad:String=""
+    var terminos:String=""
 
 }

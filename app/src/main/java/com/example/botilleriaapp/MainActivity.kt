@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.botilleriaapp.ViewModel.FormularioViewModel
 import com.example.botilleriaapp.ui.theme.Formulario
 import com.example.botilleriaapp.ui.theme.BotilleriaAppTheme
 
@@ -20,7 +21,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             BotilleriaAppTheme {
-                Formulario()
+                Formulario(viewModel = FormularioViewModel())
 
 
                 }

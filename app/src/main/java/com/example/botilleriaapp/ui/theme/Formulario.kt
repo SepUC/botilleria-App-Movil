@@ -9,9 +9,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -19,86 +18,79 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModel
+import com.example.botilleriaapp.ViewModel.FormularioViewModel
 import com.example.botilleriaapp.R
-import com.example.botilleriaapp.ViewModel.formularioViewModel
-import com.example.botilleriaapp.Model.FormularioModel
-import com.example.botilleriaapp.Model.MensajeError
-
 
 @Composable
-fun Formulario() {
+fun Formulario(viewModel: FormularioViewModel) {
 
-    var ma by remember{mutableStateOf(false)}
-    var username by remember{ mutableStateOf("") }
-    var password by remember{ mutableStateOf("") }
-    var edad by remember{mutableStateOf("")}
-
+    var abrirModal by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text="TIENDA DONDE TITO")
+        Text("Bienvenidos ", color = Color.Black)
         Image(
-            painter= painterResource(id = R.drawable.gragas2),
+            painter= painterResource(id = R.drawable.pantallazo1),
             contentDescription="Logo de la app",
             modifier=Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
         )
-
-
-
-
-
-        Text(text = "nombre")
-        //input1
-        TextField(
-            value=username,
-            onValueChange = {username=it},
-            modifier=Modifier.fillMaxWidth().padding(horizontal=16.dp),
-            placeholder={Text(text="Escribe tu nombre")}
+        Text("Ingrese sus datos para iniciar sesión", color = Color.Black)
+        OutlinedTextField(
+            value = viewModel.formulario.nombre,
+            onValueChange = { viewModel.formulario.nombre = it },
+            label = { Text("Ingresa nombre") },
+            isError = !viewModel.verificarNombre(),
+            supportingText = { Text( viewModel.mensajesError.nombre, color = Color.Red) }
         )
-        Text(text = "password")
-        //input2
-        TextField(
-            value=password,
-            onValueChange = {password=it},
-            modifier=Modifier.fillMaxWidth().padding(horizontal=16.dp),
-            placeholder={Text(text="Escribe tu contraseña")}
+        OutlinedTextField(
+            value = viewModel.formulario.correo,
+            onValueChange = { viewModel.formulario.correo = it },
+            label = { Text("Ingresa correo") },
+            isError = !viewModel.verificarCorreo(),
+            supportingText = { Text( viewModel.mensajesError.correo, color = Color.Red) }
         )
-        Text(text="edad")
-        TextField(
-            value=edad,
-            onValueChange = {edad=it},
-            modifier= Modifier.fillMaxWidth().padding(horizontal=16.dp),
-            placeholder={Text(text="Escribe tu edad")}
+        OutlinedTextField(
+            value = viewModel.formulario.edad,
+            onValueChange = { viewModel.formulario.edad = it },
+            label = { Text("Ingresa edad") },
+            isError = !viewModel.verificarEdad(),
+            supportingText = { Text( viewModel.mensajesError.edad, color = Color.Red) }
         )
-
-
+        Checkbox(
+            checked = viewModel.formulario.terminos,
+            onCheckedChange = { viewModel.formulario.terminos = it },
+        )
         Text("Acepta los términos")
 
-
-
-        Button(onClick = {ma=true}) {
-            Text(text = "Enviar")
+        Button(
+            enabled = viewModel.verificarFormulario(),
+            onClick = {
+                if(viewModel.verificarFormulario()) {
+                    abrirModal = true
+                }
+            }
+        ) {
+            Text("Enviar")
         }
-        if (ma) {
+
+        if (abrirModal) {
             AlertDialog(
                 onDismissRequest = { },
-                title = { Text("Datos ingresados correctamente") },
-                text = { Text("") },
+                title = { Text("Confirmación") },
+                text = { Text("Formulario enviado correctamente") },
                 confirmButton = {
-                    TextButton(onClick = {}) {
-                        Text("ok")
-                    }
+                    Button(onClick = { abrirModal = false }) { Text("OK") }
                 }
-
             )
         }
+
     }
 }

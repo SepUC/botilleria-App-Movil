@@ -9,8 +9,7 @@ import com.example.botilleriaapp.Model.FormularioModel
 import com.example.botilleriaapp.Model.MensajeError
 
 
-
-class formularioViewModel: ViewModel(){
+class FormularioViewModel : ViewModel() {
     private val repository = FormularioRepository()
 
     var formulario: FormularioModel by mutableStateOf( repository.getFormulario() )
@@ -19,8 +18,8 @@ class formularioViewModel: ViewModel(){
     fun verificarFormulario(): Boolean {
         return verificarNombre() &&
                 verificarCorreo() &&
-                verificarEdad()
-
+                verificarEdad() &&
+                verificarTerminos()
     }
 
     fun verificarNombre(): Boolean {
@@ -47,13 +46,24 @@ class formularioViewModel: ViewModel(){
 
     fun verificarEdad(): Boolean {
         if(!repository.validacionEdad()) {
-            mensajesError.edad = "La edad debe ser un número entre 0 y 120"
+            mensajesError.edad = "Debe ser mayor de edad para registrarse"
             return false
         } else {
             mensajesError.edad = ""
             return true
         }
         return repository.validacionEdad()
+    }
+
+    fun verificarTerminos(): Boolean {
+        if(!repository.validacionTerminos()) {
+            mensajesError.terminos = "Debes aceptar los términos"
+            return false
+        } else {
+            mensajesError.terminos = ""
+            return true
+        }
+        return repository.validacionTerminos()
     }
 
 
