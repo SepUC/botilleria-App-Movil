@@ -1,4 +1,4 @@
-package com.example.botilleriaapp.Model
+package com.example.botilleriaapp.model
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

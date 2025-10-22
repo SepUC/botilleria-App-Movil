@@ -1,4 +1,4 @@
-package com.example.botilleriaapp.ui.theme
+package com.example.botilleriaapp.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -42,6 +42,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.botilleriaapp.R
 import kotlinx.coroutines.launch
 
@@ -50,7 +51,7 @@ data class Product(val name: String, val imageId: Int, val category: String)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NavegacionScreen() {
+fun NavegacionScreen(navController: NavController) {
     // <--- LISTA DE PRODUCTOS AHORA CON CATEGORÍA
     val products = listOf(
         Product("Cerveza Cristal", R.drawable.cristal, "Cervezas"),
@@ -129,7 +130,7 @@ fun NavegacionScreen() {
             bottomBar = {
                 BottomAppBar(containerColor = Color.LightGray) {
                     Button(
-                        onClick = { /* Lógica para ir al carrito */ },
+                        onClick = { navController.navigate("carrito") },
                         modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp)
                     ) {
                         Text("Ir al Carrito")

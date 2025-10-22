@@ -1,12 +1,12 @@
-package com.example.botilleriaapp.ViewModel
+package com.example.botilleriaapp.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import com.example.botilleriaapp.Repository.FormularioRepository
-import com.example.botilleriaapp.Model.FormularioModel
-import com.example.botilleriaapp.Model.MensajeError
+import com.example.botilleriaapp.repository.FormularioRepository
+import com.example.botilleriaapp.model.FormularioModel
+import com.example.botilleriaapp.model.MensajeError
 
 
 class FormularioViewModel : ViewModel() {

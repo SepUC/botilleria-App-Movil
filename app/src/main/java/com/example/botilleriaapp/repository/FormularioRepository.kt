@@ -1,7 +1,7 @@
-package com.example.botilleriaapp.Repository
+package com.example.botilleriaapp.repository
 
-import com.example.botilleriaapp.Model.FormularioModel
-import com.example.botilleriaapp.Model.MensajeError
+import com.example.botilleriaapp.model.FormularioModel
+import com.example.botilleriaapp.model.MensajeError
 
 class FormularioRepository{
 

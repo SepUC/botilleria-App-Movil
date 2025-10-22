@@ -1,4 +1,4 @@
-package com.example.botilleriaapp.Model
+package com.example.botilleriaapp.model
 
 class MensajeError {
     var nombre:String=""

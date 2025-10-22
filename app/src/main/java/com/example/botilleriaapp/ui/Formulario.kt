@@ -17,7 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.botilleriaapp.ViewModel.FormularioViewModel
+import com.example.botilleriaapp.viewmodel.FormularioViewModel
 import com.example.botilleriaapp.R
 
 @Composable
