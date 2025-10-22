@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.DrawerValue
@@ -168,6 +169,23 @@ fun NavegacionScreen(navController: NavController, viewModel: CarritoViewModel) 
 @Composable
 fun ProductItem(product: Product, viewModel: CarritoViewModel) {
 
+    var showDialog by remember { mutableStateOf(false) }
+
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = { showDialog = false },
+            title = { Text("¡Producto Agregado!") },
+            text = { Text("Se ha agregado ${product.name} al carrito.") },
+            confirmButton = {
+                Button(
+                    onClick = { showDialog = false }
+                ) {
+                    Text("OK")
+                }
+            }
+        )
+    }
+
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
             text = product.name,
@@ -181,7 +199,10 @@ fun ProductItem(product: Product, viewModel: CarritoViewModel) {
             modifier = Modifier.fillMaxWidth()
         )
         Button(
-            onClick = { viewModel.agregarProducto(Producto(nombre = product.name, precio = product.precio)) },
+            onClick = { 
+                viewModel.agregarProducto(Producto(nombre = product.name, precio = product.precio))
+                showDialog = true
+            },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Comprar")

@@ -43,10 +43,17 @@ fun CarritoUI(viewModel: CarritoViewModel, navController: NavController) { //UI 
                 .height(175.dp)
         )
 
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            Button(onClick = { navController.popBackStack() }) {
+                Text("Devolverse")
+            }
 
-
-        Button(onClick = { navController.popBackStack() }) {
-            Text("Devolverse")
+            Button(onClick = { viewModel.vaciarCarrito() }) {
+                Text("Vaciar Carrito")
+            }
         }
 
         Spacer(modifier = Modifier.height(16.dp))

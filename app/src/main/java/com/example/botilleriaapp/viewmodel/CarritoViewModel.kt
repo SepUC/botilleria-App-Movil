@@ -46,4 +46,11 @@ class CarritoViewModel(private val repository: CarritoRepository) : ViewModel() 
             cargarProductos()
         }
     }
+
+    fun vaciarCarrito() {
+        viewModelScope.launch {
+            repository.deleteAll()
+            cargarProductos()
+        }
+    }
 }
