@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.botilleriaapp.viewmodel.CarritoViewModel
 import com.example.botilleriaapp.R
 import com.example.botilleriaapp.model.Producto
@@ -17,7 +18,7 @@ import java.lang.Character.toString
 import androidx.compose.runtime.collectAsState
 
 @Composable
-fun CarritoUI(viewModel: CarritoViewModel) { //UI de testing
+fun CarritoUI(viewModel: CarritoViewModel, navController: NavController) { //UI de testing
     val carrito by viewModel.carrito.collectAsState()
     val nombre by viewModel.nombre.collectAsState()
     val precio by viewModel.precio.collectAsState()
@@ -42,19 +43,10 @@ fun CarritoUI(viewModel: CarritoViewModel) { //UI de testing
                 .height(175.dp)
         )
 
-        OutlinedTextField(value = nombre, onValueChange = { viewModel.nombre.value = it }, label = { Text("Nombre") })
-        OutlinedTextField(
-            value = precio.toString(),
-            onValueChange = { viewModel.precio.value = it.toIntOrNull() ?: 0 },
-            label = { Text("Precio") } //El precio se transforma en string
-        )
-        Spacer(modifier = Modifier.height(16.dp))
 
-        Button(onClick = {
-            viewModel.agregarProducto(Producto(nombre = nombre, precio = precio))
-            viewModel.nombre.value = ""; viewModel.precio.value = 0;
-        }) {
-            Text("Agregar Producto Testing")
+
+        Button(onClick = { navController.popBackStack() }) {
+            Text("Devolverse")
         }
 
         Spacer(modifier = Modifier.height(16.dp))

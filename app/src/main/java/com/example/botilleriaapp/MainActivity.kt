@@ -55,10 +55,10 @@ fun AppNavigation(viewModelCarrito: CarritoViewModel) {
             Formulario(viewModel = FormularioViewModel(), navController = navController)
         }
         composable("navegacion") {
-            NavegacionScreen(navController=navController)
+            NavegacionScreen(navController = navController, viewModel = viewModelCarrito)
         }
         composable("carrito") {
-            CarritoUI(viewModelCarrito)
+            CarritoUI(viewModel = viewModelCarrito, navController = navController)
         }
     }
 }

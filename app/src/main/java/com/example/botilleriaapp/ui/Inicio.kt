@@ -44,24 +44,26 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.botilleriaapp.R
+import com.example.botilleriaapp.model.Producto
+import com.example.botilleriaapp.viewmodel.CarritoViewModel
 import kotlinx.coroutines.launch
 
 // <--- SE AÑADE CATEGORÍA AL PRODUCTO
-data class Product(val name: String, val imageId: Int, val category: String)
+data class Product(val name: String, val precio: Int, val imageId: Int, val category: String)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NavegacionScreen(navController: NavController) {
+fun NavegacionScreen(navController: NavController, viewModel: CarritoViewModel) {
     // <--- LISTA DE PRODUCTOS AHORA CON CATEGORÍA
     val products = listOf(
-        Product("Cerveza Cristal", R.drawable.cristal, "Cervezas"),
-        Product("Cerveza Escudo", R.drawable.escudo, "Cervezas"),
-        Product("Cerveza Austral", R.drawable.austral, "Cervezas"),
-        Product("Cerveza Kunstmann", R.drawable.kunstmann, "Cervezas"),
-        Product("Pisco Mistral", R.drawable.mistral, "Licores"),
-        Product("Mistral Ice", R.drawable.mistralice, "Licores"),
-        Product("Vino tinto Gato", R.drawable.vinogato, "Vinos"),
-        Product("Whisky Blue Label", R.drawable.bluelabel, "Licores")
+        Product("Cerveza Cristal", 2000, R.drawable.cristal, "Cervezas"),
+        Product("Cerveza Escudo", 4000, R.drawable.escudo, "Cervezas"),
+        Product("Cerveza Austral", 4999,R.drawable.austral, "Cervezas"),
+        Product("Cerveza Kunstmann", 3333, R.drawable.kunstmann, "Cervezas"),
+        Product("Pisco Mistral",6000, R.drawable.mistral, "Licores"),
+        Product("Mistral Ice",5000, R.drawable.mistralice, "Licores"),
+        Product("Vino tinto Gato", 3493,R.drawable.vinogato, "Vinos"),
+        Product("Whisky Blue Label",8000, R.drawable.bluelabel, "Licores")
     )
     // <--- LISTA DE CATEGORÍAS
     val categories = listOf("Todos", "Cervezas", "Licores", "Vinos","Bebidas","Snacks","Otros","Promociones")
@@ -155,7 +157,7 @@ fun NavegacionScreen(navController: NavController) {
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     items(filteredProducts) { product ->
-                        ProductItem(product = product)
+                        ProductItem(product = product, viewModel = viewModel)
                     }
                 }
             }
@@ -164,7 +166,8 @@ fun NavegacionScreen(navController: NavController) {
 }
 // Composable para mostrar cada producto individualmente
 @Composable
-fun ProductItem(product: Product) {
+fun ProductItem(product: Product, viewModel: CarritoViewModel) {
+
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
             text = product.name,
@@ -178,7 +181,7 @@ fun ProductItem(product: Product) {
             modifier = Modifier.fillMaxWidth()
         )
         Button(
-            onClick = { /* Lógica para comprar */ },
+            onClick = { viewModel.agregarProducto(Producto(nombre = product.name, precio = product.precio)) },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Comprar")
