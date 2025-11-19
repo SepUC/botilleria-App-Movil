@@ -18,7 +18,7 @@ import com.example.botilleriaapp.repository.CarritoRepository
 import com.example.botilleriaapp.model.AppDatabase
 import com.example.botilleriaapp.ui.*
 import androidx.room.Room
-
+import com.example.botilleriaapp.viewmodel.ProductosDataViewModel
 
 
 class MainActivity : ComponentActivity() {
@@ -55,7 +55,7 @@ fun AppNavigation(viewModelCarrito: CarritoViewModel) {
             Formulario(viewModel = FormularioViewModel(), navController = navController)
         }
         composable("navegacion") {
-            NavegacionScreen(navController = navController, viewModel = viewModelCarrito)
+            NavegacionScreen(navController = navController, viewModel = viewModelCarrito, viewModel2 = ProductosDataViewModel)
         }
         composable("carrito") {
             CarritoUI(viewModel = viewModelCarrito, navController = navController)

@@ -31,6 +31,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -44,36 +45,30 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.botilleriaapp.R
 import com.example.botilleriaapp.model.Producto
 import com.example.botilleriaapp.viewmodel.CarritoViewModel
 import kotlinx.coroutines.launch
+import com.example.botilleriaapp.viewmodel.ProductosDataViewModel
 
 // <--- SE AÑADE CATEGORÍA AL PRODUCTO
 data class Product(val name: String, val precio: Int, val imageId: Int, val category: String)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NavegacionScreen(navController: NavController, viewModel: CarritoViewModel) {
-    // <--- LISTA DE PRODUCTOS AHORA CON CATEGORÍA
-    val products = listOf(
-        Product("Cerveza Cristal", 2000, R.drawable.cristal, "Cervezas"),
-        Product("Cerveza Escudo", 4000, R.drawable.escudo, "Cervezas"),
-        Product("Cerveza Austral", 4999,R.drawable.austral, "Cervezas"),
-        Product("Cerveza Kunstmann", 3333, R.drawable.kunstmann, "Cervezas"),
-        Product("Pisco Mistral",6000, R.drawable.mistral, "Licores"),
-        Product("Mistral Ice",5000, R.drawable.mistralice, "Licores"),
-        Product("Vino tinto Gato", 3493,R.drawable.vinogato, "Vinos"),
-        Product("Whisky Blue Label",8000, R.drawable.bluelabel, "Licores")
-    )
-    // <--- LISTA DE CATEGORÍAS
+fun NavegacionScreen(navController: NavController, viewModel: CarritoViewModel, viewModel2: ProductosDataViewModel) {
+    // LISTA DE PRODUCTOS AHORA CON CATEGORÍA -> Cambiar al Model - Listar desde la API los productos
+    val products by viewModel2.productosData.collectAsState(initial = emptyList());
+
+    // <--- LISTA DE CATEGORÍAS -> Model
     val categories = listOf("Todos", "Cervezas", "Licores", "Vinos","Bebidas","Snacks","Otros","Promociones")
 
     // Estados para la búsqueda y la categoría seleccionada
     var searchQuery by remember { mutableStateOf("") }
     var selectedCategory by remember { mutableStateOf("Todos") }
 
-    // Lógica de filtrado doble: por categoría y luego por búsqueda
+
+
+    // Lógica de filtrado doble: por categoría y luego por búsqueda -> CAMBIAR A Viewmodel
     val filteredProducts = remember(searchQuery, selectedCategory, products) {
         val categoryFiltered = if (selectedCategory == "Todos") {
             products
@@ -158,7 +153,7 @@ fun NavegacionScreen(navController: NavController, viewModel: CarritoViewModel) 
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     items(filteredProducts) { product ->
-                        ProductItem(product = product, viewModel = viewModel)
+                        ProductItem(product, viewModel)
                     }
                 }
             }
@@ -167,7 +162,7 @@ fun NavegacionScreen(navController: NavController, viewModel: CarritoViewModel) 
 }
 // Composable para mostrar cada producto individualmente
 @Composable
-fun ProductItem(product: Product, viewModel: CarritoViewModel) {
+fun ProductItem(product: com.example.botilleriaapp.data.model.Producto, viewModel: CarritoViewModel) {
 
     var showDialog by remember { mutableStateOf(false) }
 
@@ -194,13 +189,13 @@ fun ProductItem(product: Product, viewModel: CarritoViewModel) {
             modifier = Modifier.padding(bottom = 4.dp)
         )
         Image(
-            painter = painterResource(id = product.imageId),
+            painter = painterResource(id = product.id),
             contentDescription = product.name,
             modifier = Modifier.fillMaxWidth()
         )
         Button(
-            onClick = { 
-                viewModel.agregarProducto(Producto(nombre = product.name, precio = product.precio))
+            onClick = {
+                viewModel.agregarProducto(Producto(nombre = product.name, precio = product.price))
                 showDialog = true
             },
             modifier = Modifier.fillMaxWidth()
