@@ -1,4 +1,4 @@
-package com.example.botilleriaapp.ui
+package com.example.botilleriaapp.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
