@@ -51,7 +51,7 @@ import kotlinx.coroutines.launch
 import com.example.botilleriaapp.viewmodel.ProductosDataViewModel
 
 // <--- SE AÑADE CATEGORÍA AL PRODUCTO
-data class Product(val name: String, val precio: Int, val imageId: Int, val category: String)
+/*data class Product(val name: String, val precio: Int, val imageId: Int, val category: String)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -204,3 +204,4 @@ fun ProductItem(product: com.example.botilleriaapp.data.model.Producto, viewMode
         }
     }
 }
+*/

@@ -4,6 +4,6 @@ import com.example.botilleriaapp.data.model.Producto
 import retrofit2.http.GET
 
 interface ApiService {
-    @GET("api.php?endpoint=obtenerProductos")
+    @GET("product")
     suspend fun getProductos(): List<Producto>
 }

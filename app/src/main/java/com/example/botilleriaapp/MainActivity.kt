@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.botilleriaapp.ui.NavegacionScreen
+//import com.example.botilleriaapp.ui.NavegacionScreen
 import com.example.botilleriaapp.ui.theme.BotilleriaAppTheme
 import com.example.botilleriaapp.ui.theme.Formulario
 import com.example.botilleriaapp.viewmodel.FormularioViewModel
@@ -41,13 +41,14 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             BotilleriaAppTheme {
-                AppNavigation(viewModelCarrito)
+                //AppNavigation(viewModelCarrito)
+                ProductListScreen()
             }
         }
     }
 }
 
-@Composable
+/*@Composable
 fun AppNavigation(viewModelCarrito: CarritoViewModel) {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = "formulario") {
@@ -55,10 +56,10 @@ fun AppNavigation(viewModelCarrito: CarritoViewModel) {
             Formulario(viewModel = FormularioViewModel(), navController = navController)
         }
         composable("navegacion") {
-            NavegacionScreen(navController = navController, viewModel = viewModelCarrito, viewModel2 = ProductosDataViewModel)
+            NavegacionScreen(navController = navController, viewModel = viewModelCarrito)
         }
         composable("carrito") {
             CarritoUI(viewModel = viewModelCarrito, navController = navController)
         }
     }
-}
+}*/
