@@ -70,7 +70,7 @@ fun Formulario(viewModel: FormularioViewModel, navController: NavController) {
             enabled = viewModel.verificarFormulario(),
             onClick = {
                 if (viewModel.verificarFormulario()) {
-                    navController.navigate("navegacion")
+                    navController.navigate("productos")
                 }
             }
         ) {
