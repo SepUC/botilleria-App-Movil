@@ -29,8 +29,7 @@ fun CarritoUI(viewModel: CarritoViewModel, navController: NavController) {
         AlertDialog(
             onDismissRequest = { 
                 showDialog = false 
-                // Opcional: navegar hacia atrás después de confirmar
-                // navController.popBackStack()
+                navController.popBackStack()
             },
             title = { Text("¡Gracias por tu compra!") },
             text = { Text("Tu compra ha sido realizada correctamente.") },
@@ -38,8 +37,7 @@ fun CarritoUI(viewModel: CarritoViewModel, navController: NavController) {
                 Button(
                     onClick = { 
                         showDialog = false
-                        // Opcional: navegar hacia atrás después de confirmar
-                        // navController.popBackStack()
+                        navController.popBackStack()
                     }
                 ) {
                     Text("OK")
@@ -51,29 +49,28 @@ fun CarritoUI(viewModel: CarritoViewModel, navController: NavController) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Carrito de Compras") },
-                navigationIcon = {
-                    Button(onClick = { navController.popBackStack() }) {
-                        Text("Volver")
-                    }
-                }
+                title = { Text("Carrito de Compras") }
             )
         },
         bottomBar = {
-            if (carrito.isNotEmpty()) {
-                BottomAppBar {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
+            BottomAppBar {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Button(onClick = { navController.popBackStack() }) {
+                        Text("Volver")
+                    }
+                    if (carrito.isNotEmpty()) {
+                        Spacer(modifier = Modifier.weight(1f))
                         Text(
                             text = "Total: $$totalCarrito",
-                            style = MaterialTheme.typography.titleLarge,
+                            style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold
                         )
+                        Spacer(modifier = Modifier.width(8.dp))
                         Button(onClick = { 
                             viewModel.vaciarCarrito()
                             showDialog = true

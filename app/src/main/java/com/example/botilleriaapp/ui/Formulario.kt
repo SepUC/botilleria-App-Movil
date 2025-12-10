@@ -46,7 +46,10 @@ fun Formulario(
             supportingText = { Text(viewModel.mensajesError.nombre, color = Color.Red) },
             colors = OutlinedTextFieldDefaults.colors(
                 focusedTextColor = Color.Black,
-                unfocusedTextColor = Color.Black
+                unfocusedTextColor = Color.Black,
+                unfocusedContainerColor = Color.White,
+                focusedContainerColor = Color.White,
+                cursorColor = Color.Black
             )
         )
         OutlinedTextField(
@@ -57,7 +60,10 @@ fun Formulario(
             supportingText = { Text(viewModel.mensajesError.correo, color = Color.Red) },
             colors = OutlinedTextFieldDefaults.colors(
                 focusedTextColor = Color.Black,
-                unfocusedTextColor = Color.Black
+                unfocusedTextColor = Color.Black,
+                unfocusedContainerColor = Color.White,
+                focusedContainerColor = Color.White,
+                cursorColor = Color.Black
             )
         )
         OutlinedTextField(
@@ -68,7 +74,10 @@ fun Formulario(
             supportingText = { Text(viewModel.mensajesError.edad, color = Color.Red) },
             colors = OutlinedTextFieldDefaults.colors(
                 focusedTextColor = Color.Black,
-                unfocusedTextColor = Color.Black
+                unfocusedTextColor = Color.Black,
+                unfocusedContainerColor = Color.White,
+                focusedContainerColor = Color.White,
+                cursorColor = Color.Black
             )
         )
         Checkbox(
