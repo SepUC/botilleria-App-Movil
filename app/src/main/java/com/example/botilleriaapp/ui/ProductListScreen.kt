@@ -5,7 +5,9 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -20,12 +22,50 @@ import com.example.botilleriaapp.viewmodel.CarritoViewModel
 import com.example.botilleriaapp.model.Producto as CarritoProducto
 import kotlinx.coroutines.launch
 
+@Composable
+private fun ProductQuantitySelector(onAddToCart: (Int) -> Unit) {
+    var quantity by remember { mutableStateOf(1) }
+
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            IconButton(
+                onClick = { if (quantity > 1) quantity-- },
+                modifier = Modifier.size(36.dp)
+            ) {
+                Icon(Icons.Default.Remove, contentDescription = "Quitar uno")
+            }
+
+            Text(text = quantity.toString(), style = MaterialTheme.typography.titleMedium)
+
+            IconButton(
+                onClick = { quantity++ },
+                modifier = Modifier.size(36.dp)
+            ) {
+                Icon(Icons.Default.Add, contentDescription = "Añadir uno")
+            }
+        }
+        Button(
+            onClick = { 
+                onAddToCart(quantity)
+                quantity = 1 // Reset quantity after adding to cart
+            },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(if (quantity > 1) "Agregar $quantity al carrito" else "Agregar al carrito")
+        }
+    }
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProductListScreen(
     navController: NavController,
     productoViewModel: ProductoViewModel = viewModel(),
-    carritoViewModel: CarritoViewModel
+    carritoViewModel: CarritoViewModel,
+    onLogout: () -> Unit
 ) {
     val productos by productoViewModel.productos.collectAsState()
     var searchQuery by remember { mutableStateOf("") }
@@ -89,6 +129,7 @@ fun ProductListScreen(
                     },
                     actions = {
                         TextButton(onClick = {
+                            onLogout()
                             navController.navigate("formulario") {
                                 popUpTo(navController.graph.startDestinationId) {
                                     inclusive = true
@@ -127,11 +168,11 @@ fun ProductListScreen(
                 )
 
                 LazyVerticalGrid(
-                    columns = GridCells.Adaptive(minSize = 120.dp),
+                    columns = GridCells.Adaptive(minSize = 128.dp), // Aumentamos el tamaño mínimo para que quepa el contador
                     modifier = Modifier.fillMaxSize(),
                     contentPadding = PaddingValues(horizontal = 8.dp, vertical = 16.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                    verticalArrangement = Arrangement.spacedBy(16.dp) // Aumentamos el espaciado vertical
                 ) {
                     items(filteredProductos) { producto ->
                         Card(
@@ -140,7 +181,7 @@ fun ProductListScreen(
                             Column(
                                 modifier = Modifier.padding(8.dp),
                                 horizontalAlignment = Alignment.CenterHorizontally,
-                                verticalArrangement = Arrangement.Center
+                                verticalArrangement = Arrangement.SpaceBetween // Ajustamos el espaciado
                             ) {
                                 AsyncImage(
                                     model = producto.cover_image?.url,
@@ -166,16 +207,15 @@ fun ProductListScreen(
                                     )
                                 }
                                 Spacer(modifier = Modifier.height(8.dp))
-                                Button(onClick = {
+                                ProductQuantitySelector { quantity ->
                                     val productoParaCarrito = CarritoProducto(
                                         nombre = producto.name ?: "",
-                                        precio = producto.price ?: 0
+                                        precio = producto.price ?: 0,
+                                        cantidad = quantity
                                     )
                                     carritoViewModel.agregarProducto(productoParaCarrito)
-                                    lastAddedProduct = producto.name
+                                    lastAddedProduct = "${quantity}x ${producto.name}"
                                     showDialog = true
-                                }) {
-                                    Text("Agregar al carrito")
                                 }
                             }
                         }
