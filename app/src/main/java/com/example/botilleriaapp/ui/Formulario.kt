@@ -49,6 +49,7 @@ fun Formulario(
                 unfocusedTextColor = Color.Black,
                 unfocusedContainerColor = Color.White,
                 focusedContainerColor = Color.White,
+                errorContainerColor = Color.White, // Añadido para consistencia
                 cursorColor = Color.Black
             )
         )
@@ -63,6 +64,7 @@ fun Formulario(
                 unfocusedTextColor = Color.Black,
                 unfocusedContainerColor = Color.White,
                 focusedContainerColor = Color.White,
+                errorContainerColor = Color.White, // ¡Solución para el campo de correo!
                 cursorColor = Color.Black
             )
         )
@@ -77,6 +79,7 @@ fun Formulario(
                 unfocusedTextColor = Color.Black,
                 unfocusedContainerColor = Color.White,
                 focusedContainerColor = Color.White,
+                errorContainerColor = Color.White, // Añadido para consistencia
                 cursorColor = Color.Black
             )
         )
