@@ -1,8 +1,7 @@
 package com.example.botilleriaapp
 
-import org.junit.Test
-
-import org.junit.Assert.*
+import org.junit.jupiter.api.Test
+import io.kotest.matchers.shouldBe
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -11,7 +10,17 @@ import org.junit.Assert.*
  */
 class ExampleUnitTest {
     @Test
-    fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+    fun `addition is correct`() {
+        (2 + 2) shouldBe 4
+    }
+    
+    @Test
+    fun `subtraction is correct`() {
+        (5 - 3) shouldBe 2
+    }
+    
+    @Test
+    fun `multiplication is correct`() {
+        (3 * 4) shouldBe 12
     }
 }

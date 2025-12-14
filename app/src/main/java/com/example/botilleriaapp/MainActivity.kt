@@ -1,5 +1,6 @@
 package com.example.botilleriaapp
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -26,31 +27,62 @@ class MainActivity : ComponentActivity() {
             applicationContext,
             AppDatabase::class.java,
             "carrito_db"
-        ).build()
+        )
+        .fallbackToDestructiveMigration() // ¡Solución para que la app no se cierre!
+        .build()
     }
     private val repository by lazy { CarritoRepository(db.carritoDao()) }
     private val viewModelCarrito by lazy { CarritoViewModel(repository) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val prefs = getSharedPreferences("botilleria_prefs", Context.MODE_PRIVATE)
+        val isLoggedIn = prefs.getBoolean("IS_LOGGED_IN", false)
+
         enableEdgeToEdge()
         setContent {
             BotilleriaAppTheme {
-                AppNavigation(viewModelCarrito)
+                AppNavigation(
+                    viewModelCarrito = viewModelCarrito,
+                    isLoggedIn = isLoggedIn,
+                    onLoginSuccess = {
+                        prefs.edit().putBoolean("IS_LOGGED_IN", true).apply()
+                    },
+                    onLogout = {
+                        prefs.edit().putBoolean("IS_LOGGED_IN", false).apply()
+                    }
+                )
             }
         }
     }
 }
 
 @Composable
-fun AppNavigation(viewModelCarrito: CarritoViewModel) {
+fun AppNavigation(
+    viewModelCarrito: CarritoViewModel,
+    isLoggedIn: Boolean,
+    onLoginSuccess: () -> Unit,
+    onLogout: () -> Unit
+) {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "formulario") {
+    // Se cambia el startDestination para que siempre inicie en el formulario
+    val startDestination = "formulario"
+
+    NavHost(navController = navController, startDestination = startDestination) {
         composable("formulario") {
-            Formulario(viewModel = viewModel<FormularioViewModel>(), navController = navController)
+            Formulario(
+                viewModel = viewModel<FormularioViewModel>(),
+                navController = navController,
+                onLoginSuccess = onLoginSuccess
+            )
         }
         composable("productos") {
-            ProductListScreen(navController = navController, carritoViewModel = viewModelCarrito)
+            ProductListScreen(
+                navController = navController,
+                carritoViewModel = viewModelCarrito,
+                onLogout = onLogout
+            )
         }
         composable("carrito") {
             CarritoUI(viewModel = viewModelCarrito, navController = navController)

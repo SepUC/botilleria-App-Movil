@@ -6,10 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,9 +18,11 @@ import com.example.botilleriaapp.viewmodel.FormularioViewModel
 import com.example.botilleriaapp.R
 
 @Composable
-fun Formulario(viewModel: FormularioViewModel, navController: NavController) {
-
-
+fun Formulario(
+    viewModel: FormularioViewModel, 
+    navController: NavController,
+    onLoginSuccess: () -> Unit
+) {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -44,21 +43,45 @@ fun Formulario(viewModel: FormularioViewModel, navController: NavController) {
             onValueChange = { viewModel.formulario.nombre = it },
             label = { Text("Ingresa nombre") },
             isError = !viewModel.verificarNombre(),
-            supportingText = { Text(viewModel.mensajesError.nombre, color = Color.Red) }
+            supportingText = { Text(viewModel.mensajesError.nombre, color = Color.Red) },
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedTextColor = Color.Black,
+                unfocusedTextColor = Color.Black,
+                unfocusedContainerColor = Color.White,
+                focusedContainerColor = Color.White,
+                errorContainerColor = Color.White, // Añadido para consistencia
+                cursorColor = Color.Black
+            )
         )
         OutlinedTextField(
             value = viewModel.formulario.correo,
             onValueChange = { viewModel.formulario.correo = it },
             label = { Text("Ingresa correo") },
             isError = !viewModel.verificarCorreo(),
-            supportingText = { Text(viewModel.mensajesError.correo, color = Color.Red) }
+            supportingText = { Text(viewModel.mensajesError.correo, color = Color.Red) },
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedTextColor = Color.Black,
+                unfocusedTextColor = Color.Black,
+                unfocusedContainerColor = Color.White,
+                focusedContainerColor = Color.White,
+                errorContainerColor = Color.White, // ¡Solución para el campo de correo!
+                cursorColor = Color.Black
+            )
         )
         OutlinedTextField(
             value = viewModel.formulario.edad,
             onValueChange = { viewModel.formulario.edad = it },
             label = { Text("Ingresa edad") },
             isError = !viewModel.verificarEdad(),
-            supportingText = { Text(viewModel.mensajesError.edad, color = Color.Red) }
+            supportingText = { Text(viewModel.mensajesError.edad, color = Color.Red) },
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedTextColor = Color.Black,
+                unfocusedTextColor = Color.Black,
+                unfocusedContainerColor = Color.White,
+                focusedContainerColor = Color.White,
+                errorContainerColor = Color.White, // Añadido para consistencia
+                cursorColor = Color.Black
+            )
         )
         Checkbox(
             checked = viewModel.formulario.terminos,
@@ -70,6 +93,7 @@ fun Formulario(viewModel: FormularioViewModel, navController: NavController) {
             enabled = viewModel.verificarFormulario(),
             onClick = {
                 if (viewModel.verificarFormulario()) {
+                    onLoginSuccess() // Se llama a la función para guardar la sesión
                     navController.navigate("productos")
                 }
             }
